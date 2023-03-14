@@ -50,14 +50,21 @@ const ChartArea = () => {
           <YAxis yAxisId='bar' orientation='right'>
             <Label value='Bar' angle={90} position='right' />
           </YAxis>
-          <Tooltip />
+          <Tooltip
+            labelFormatter={(label, payload) => {
+              if (payload && payload.length > 0) {
+                return payload[0].payload.id;
+              }
+              return label;
+            }}
+          />
           <Legend verticalAlign='bottom' align='left' />
           <Area
             yAxisId='area'
             type='monotone'
             dataKey='value_area'
-            fill='#8884d8'
-            stroke='#8884d8'
+            fill='#9dc3e2'
+            stroke='#9dd2d8'
             fillOpacity={1}
             name='Area'
           />
@@ -65,8 +72,9 @@ const ChartArea = () => {
             yAxisId='bar'
             name='Bar'
             dataKey='value_bar'
-            barSize={20}
-            fill='#c73866'
+            barSize={10}
+            stroke='#fadce4'
+            fill='#ffb5cc'
             fillOpacity={0.8}
           />
         </ComposedChart>
