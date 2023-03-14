@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { Chart, MainLayout } from 'components';
+import { useEffect, useState } from 'react';
+import { ChartDataType, MockDataType } from 'types/data';
+import { getMockDataApi } from 'utils/api/chart';
 
 function App() {
+  const [mockData, setMockData] = useState<MockDataType>();
+  const [chartData, setChartData] = useState<ChartDataType[]>();
+
+  const getMockData = async () => {
+    const data = await getMockDataApi();
+    setMockData(data);
+  };
+
+  useEffect(() => {
+    getMockData();
+  }, []);
+
+  useEffect(() => {
+    if (mockData) {
+      const data: ChartDataType[] = Object.entries(mockData).map(
+        ([time, { id, value_area, value_bar }]) => ({
+          time,
+          id,
+          value_area,
+          value_bar,
+        }),
+      );
+      setChartData(data);
+    }
+  }, [mockData]);
+
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainLayout>
+      <Chart data={chartData} />
+    </MainLayout>
   );
 }
 
