@@ -32,55 +32,51 @@ const ChartArea = () => {
   }, []);
   return (
     <ResponsiveContainer minHeight='80vh'>
-      {data ? (
-        <ComposedChart
-          data={data}
-          margin={{
-            top: 20,
-            right: 20,
-            bottom: 20,
-            left: 20,
+      <ComposedChart
+        data={data}
+        margin={{
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20,
+        }}
+      >
+        <CartesianGrid strokeDasharray='3 3' />
+        <XAxis dataKey='time' padding='gap' />
+        <YAxis yAxisId='area'>
+          <Label value='Area' angle={-90} position='left' />
+        </YAxis>
+        <YAxis yAxisId='bar' orientation='right'>
+          <Label value='Bar' angle={90} position='right' />
+        </YAxis>
+        <Tooltip
+          labelFormatter={(label, payload) => {
+            if (payload && payload.length > 0) {
+              return `[${label}] : ${payload[0].payload.id}`;
+            }
+            return label;
           }}
-        >
-          <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='time' padding='gap' />
-          <YAxis yAxisId='area'>
-            <Label value='Area' angle={-90} position='left' />
-          </YAxis>
-          <YAxis yAxisId='bar' orientation='right'>
-            <Label value='Bar' angle={90} position='right' />
-          </YAxis>
-          <Tooltip
-            labelFormatter={(label, payload) => {
-              if (payload && payload.length > 0) {
-                return payload[0].payload.id;
-              }
-              return label;
-            }}
-          />
-          <Legend verticalAlign='bottom' align='left' />
-          <Area
-            yAxisId='area'
-            type='monotone'
-            dataKey='value_area'
-            fill='#9dc3e2'
-            stroke='#9dd2d8'
-            fillOpacity={1}
-            name='Area'
-          />
-          <Bar
-            yAxisId='bar'
-            name='Bar'
-            dataKey='value_bar'
-            barSize={10}
-            stroke='#fadce4'
-            fill='#ffb5cc'
-            fillOpacity={0.8}
-          />
-        </ComposedChart>
-      ) : (
-        <div>loading...</div>
-      )}
+        />
+        <Legend verticalAlign='bottom' align='left' />
+        <Area
+          yAxisId='area'
+          type='monotone'
+          dataKey='value_area'
+          fill='#9dc3e2'
+          stroke='#9dd2d8'
+          fillOpacity={1}
+          name='Area'
+        />
+        <Bar
+          yAxisId='bar'
+          name='Bar'
+          dataKey='value_bar'
+          barSize={10}
+          stroke='#fadce4'
+          fill='#ffb5cc'
+          fillOpacity={0.8}
+        />
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };
