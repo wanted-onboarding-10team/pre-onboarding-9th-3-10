@@ -9,3 +9,12 @@ export interface Chart {
   value_bar: number;
   value_day: string;
 }
+
+export interface Tooltip {
+  active?: boolean;
+  payload?: TooltipPayload[];
+}
+
+interface TooltipPayload {
+  payload: Chart;
+}

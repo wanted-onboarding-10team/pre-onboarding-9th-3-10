@@ -9,9 +9,11 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
+  Tooltip,
 } from 'recharts';
 import { Chart } from '../types/Chart';
 import Category from './Category';
+import CustomTooltip from './CustomTooltip';
 
 interface ChartProps {
   data: Chart[];
@@ -72,6 +74,7 @@ const ChartList = ({ data, location, changeLocation }: ChartProps) => {
               ))}
             </Bar>
           )}
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
         </ComposedChart>
       </ResponsiveContainer>
