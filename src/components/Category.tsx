@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
-import { CategoryBtn } from '../styles/button';
-import { CategoryDiv } from '../styles/layout';
+import { CategoryBtn } from '../styles/Button';
+import { CategoryDiv } from '../styles/Layout';
 
 interface CategoryProps {
   setCategory: Dispatch<SetStateAction<string>>;
