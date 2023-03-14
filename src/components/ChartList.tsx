@@ -30,7 +30,7 @@ const ChartList = ({ data, location, changeLocation }: ChartProps) => {
       <ResponsiveContainer width='90%' height={500}>
         <ComposedChart data={data} margin={{ top: 40, right: 40, bottom: 30, left: 40 }}>
           <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='time' />
+          <XAxis dataKey='day' />
           <YAxis
             dataKey='value_area'
             yAxisId='left'
