@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { ChartDataArray } from 'App';
 import {
   Area,
   Bar,
   CartesianGrid,
+  Cell,
   ComposedChart,
   Label,
   Legend,
@@ -11,29 +12,18 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { getChartData } from 'utils/api';
-import { ChartData } from 'utils/type';
 
-interface ChartDataArray extends ChartData {
-  time: string;
+interface ChartAreaParam {
+  chartData: ChartDataArray[];
+  clickedId: string | null;
+  changeClickedIdByValue: (value: string) => void;
 }
 
-const ChartArea = () => {
-  const [data, setData] = useState<ChartDataArray[]>();
-
-  useEffect(() => {
-    (async () => {
-      const apiData = await getChartData();
-      const convertData: ChartDataArray[] = Object.entries(apiData).map(item => {
-        return { time: item[0], ...item[1] };
-      });
-      setData(convertData);
-    })();
-  }, []);
+const ChartArea = ({ chartData, clickedId, changeClickedIdByValue }: ChartAreaParam) => {
   return (
     <ResponsiveContainer minHeight='80vh'>
       <ComposedChart
-        data={data}
+        data={chartData}
         margin={{
           top: 20,
           right: 20,
@@ -75,7 +65,17 @@ const ChartArea = () => {
           stroke='#fadce4'
           fill='#ffb5cc'
           fillOpacity={0.8}
-        />
+          onClick={data => {
+            changeClickedIdByValue(data.id);
+          }}
+        >
+          {chartData?.map(entry => (
+            <Cell
+              key={entry.time}
+              fill={clickedId === entry.id ? '#2B5CE7' : 'rgba(43, 92, 231, 0.2)'}
+            />
+          ))}
+        </Bar>
       </ComposedChart>
     </ResponsiveContainer>
   );
