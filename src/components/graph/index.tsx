@@ -5,10 +5,12 @@ import {
   ComposedChart,
   Legend,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 import { MockDataType } from 'types';
+import CustomToolip from './tooltip/CutsomToolip';
 
 const Graph = ({ data }: { data: MockDataType[] }) => {
   return (
@@ -16,6 +18,7 @@ const Graph = ({ data }: { data: MockDataType[] }) => {
       <ComposedChart data={data} barCategoryGap='40%'>
         <CartesianGrid strokeDasharray='3 3' />
         <Legend />
+        <Tooltip content={<CustomToolip />} />
         <XAxis dataKey='name' tickSize={15} />
         <YAxis dataKey='value_area' orientation='right' yAxisId={0} />
         <YAxis dataKey='value_bar' orientation='left' yAxisId={1} />
