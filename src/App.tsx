@@ -1,7 +1,7 @@
-import './App.css';
+import ChartArea from 'components/ChartArea';
 
 function App() {
-  return null;
+  return <ChartArea />;
 }
 
 export default App;
