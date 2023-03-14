@@ -1,4 +1,4 @@
-import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, Bar, CartesianGrid, ComposedChart, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import { ChartDataType } from 'types/data';
 
 interface ChartProps {
@@ -6,16 +6,20 @@ interface ChartProps {
 }
 
 const Chart = ({ data }: ChartProps) => {
-  return (
-    <LineChart width={1400} height={700} data={data}>
+  return data ? (
+    <ComposedChart width={1400} height={800} data={data}>
       <CartesianGrid strokeDasharray='3 3' />
       <XAxis dataKey='time' />
-      <YAxis />
+      <YAxis dataKey='value_bar' tickCount={8} />
+      <YAxis dataKey='value_bar' tickCount={8} />
       <Tooltip />
       <Legend />
-      <Line type='monotone' dataKey='value_area' stroke='#8884d8' />
-      <Line type='monotone' dataKey='value_bar' stroke='#82ca9d' />
-    </LineChart>
+
+      <Bar type='monotone' dataKey='value_bar' fill='#82ca9d' />
+      <Area type='monotone' dataKey='value_area' stroke='#8884d8' />
+    </ComposedChart>
+  ) : (
+    <p>loading</p>
   );
 };
 
