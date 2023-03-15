@@ -10,19 +10,20 @@ import {
   YAxis,
 } from 'recharts';
 import { ChartDataType } from 'types/data';
-
+import * as S from 'style/CustomTooltip';
+import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 interface ChartProps {
   data?: ChartDataType[];
 }
 const Chart = ({ data }: ChartProps) => {
-  const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>) => {
     if (active && payload) {
       return (
-        <div className='custom-tooltip'>
+        <S.CustomTooltip>
           <div>{`ID: ${payload[0].payload.id}`}</div>
           <div>{`value_bar: ${payload[0].value}`}</div>
           <div>{`value_area: ${payload[1].value}`}</div>
-        </div>
+        </S.CustomTooltip>
       );
     }
     return null;
