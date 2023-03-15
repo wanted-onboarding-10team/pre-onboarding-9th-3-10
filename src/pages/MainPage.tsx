@@ -4,13 +4,14 @@ import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Data, OriginData } from 'types/types';
 import MainChart from 'components/MainChart';
 import IdCheckboxs from 'components/Checkboxs';
-import MainLayout from './../components/common/MainLayout';
+import MainLayout from 'components/common/MainLayout';
 
 const MainPage = () => {
   const orginData = useLoaderData() as OriginData;
+  const [query, setQuery] = useSearchParams();
 
   const [datas, setDatas] = useState<Data[]>([]);
-  const [locals, setLocals] = useState<string[]>([]);
+  const [idRange, setIdRange] = useState<string[]>([]);
   const [idSelect, setIdSelect] = useState<string[]>([]);
 
   const keys = Object.keys(orginData);
@@ -31,20 +32,40 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    const deduplID: Set<string> = new Set();
-    datas.forEach(e => deduplID.add(e.id));
-    setLocals([...Array.from(deduplID)]);
+    const arr = query.get('check')?.split('_');
+    arr?.pop();
+    if (arr !== undefined) {
+      setIdSelect([...arr]);
+    }
+  }, [query]);
+
+  useEffect(() => {
+    const deduplID = datas.reduce<string[]>((acc, cur) => {
+      acc.includes(cur.id) ? acc : acc.push(cur.id);
+      return acc;
+    }, []);
+    setIdRange(deduplID);
   }, [datas]);
+
+  const onSelect = (value: string[]) => {
+    let str = 'check=';
+    value.forEach(e => (str = str.concat(e, '_')));
+    setQuery(str);
+  };
 
   return (
     <MainLayout>
       <Heading>{date}</Heading>
       <Box borderRadius='lg' borderWidth='1px' p='2'>
         <Stack spacing={5} direction='row'>
-          <CheckboxGroup colorScheme={'green'} onChange={(value: string[]) => setIdSelect(value)}>
-            {locals.map(element => (
-              <IdCheckboxs key={element + 'keys'} element={element} />
-            ))}
+          <CheckboxGroup
+            colorScheme={'yellow'}
+            onChange={(value: string[]) => onSelect(value)}
+            value={[...idSelect]}
+          >
+            {idRange.map(element => {
+              return <IdCheckboxs key={element} element={element} />;
+            })}
           </CheckboxGroup>
         </Stack>
       </Box>
