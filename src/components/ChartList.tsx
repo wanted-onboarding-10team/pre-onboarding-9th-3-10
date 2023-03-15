@@ -25,10 +25,10 @@ const ChartList = ({ data, location, changeLocation }: ChartProps) => {
   return (
     <>
       <Category setCategory={setCategory} />
-      <ResponsiveContainer width='90%' height={500}>
+      <ResponsiveContainer height={500}>
         <ComposedChart data={data} margin={{ top: 40, right: 40, bottom: 30, left: 40 }}>
           <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='time' />
+          <XAxis dataKey='day' />
           <YAxis
             dataKey='value_area'
             yAxisId='left'
@@ -54,8 +54,8 @@ const ChartList = ({ data, location, changeLocation }: ChartProps) => {
               yAxisId='left'
               type='monotone'
               dataKey='value_area'
-              stroke='#C0C0C0'
-              fill='#C0C0C0'
+              stroke='#1E90FF'
+              fill='#1E90FF'
             ></Area>
           )}
 
@@ -64,11 +64,11 @@ const ChartList = ({ data, location, changeLocation }: ChartProps) => {
               yAxisId='right'
               data={data}
               dataKey='value_bar'
-              fill='#FFE4E1'
+              fill='#FFEBCD'
               onClick={value => changeLocation(value.id)}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.id === location ? '#FFB6C1' : '#FFE4E1'} />
+                <Cell key={`cell-${index}`} fill={entry.id === location ? '	#DEB887' : '#FFEBCD'} />
               ))}
             </Bar>
           )}
