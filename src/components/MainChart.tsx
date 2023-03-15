@@ -32,15 +32,19 @@ const MainChart = ({ datas, idSelect }: { datas: Data[]; idSelect: string[] }) =
       }}
     >
       <Legend verticalAlign='bottom' height={36} />
+      <Tooltip position={{ y: -10 }} content={CustomTooltip} wrapperStyle={{ outline: 'none' }} />
+
       <XAxis
         dataKey='date'
         label={{ value: 'date', position: 'insideBottomRight', offset: 6 }}
         scale='auto'
         minTickGap={30}
       />
+      <XAxis hide={true} dataKey='id' />
       <YAxis
         yAxisId='value_bar'
         dataKey='value_bar'
+        orientation='left'
         label={{ value: 'value_bar', position: 'top', offset: 15 }}
       />
       <YAxis
@@ -49,8 +53,7 @@ const MainChart = ({ datas, idSelect }: { datas: Data[]; idSelect: string[] }) =
         orientation='right'
         label={{ value: `value_area`, position: 'top', offset: 15 }}
       />
-      <XAxis hide={true} dataKey='id' />
-      <Tooltip position={{ y: -10 }} content={CustomTooltip} wrapperStyle={{ outline: 'none' }} />
+
       <Area
         yAxisId='value_area'
         dataKey='value_area'

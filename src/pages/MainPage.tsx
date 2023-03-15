@@ -4,6 +4,7 @@ import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Data, OriginData } from 'types/types';
 import MainChart from 'components/MainChart';
 import IdCheckboxs from 'components/Checkboxs';
+import MainLayout from './../components/common/MainLayout';
 
 const MainPage = () => {
   const orginData = useLoaderData() as OriginData;
@@ -36,7 +37,7 @@ const MainPage = () => {
   }, [datas]);
 
   return (
-    <>
+    <MainLayout>
       <Heading>{date}</Heading>
       <Box borderRadius='lg' borderWidth='1px' p='2'>
         <Stack spacing={5} direction='row'>
@@ -48,7 +49,7 @@ const MainPage = () => {
         </Stack>
       </Box>
       <MainChart datas={datas} idSelect={idSelect} />
-    </>
+    </MainLayout>
   );
 };
 
