@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import ChartList from './components/ChartList';
-import useChart from './hooks/useChart';
+import ChartList from 'components/ChartList';
+import useChart from 'hooks/useChart';
 
 const App = () => {
   const { data } = useChart();

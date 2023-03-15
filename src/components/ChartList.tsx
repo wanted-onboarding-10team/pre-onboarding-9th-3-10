@@ -11,9 +11,9 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts';
-import { Chart } from '../types/Chart';
-import Category from './Category';
-import CustomTooltip from './CustomTooltip';
+import { Chart } from 'types/Chart';
+import Category from 'components/Category';
+import CustomTooltip from 'components/CustomTooltip';
 
 interface ChartProps {
   data: Chart[];

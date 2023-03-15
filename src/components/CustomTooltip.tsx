@@ -1,6 +1,6 @@
-import { TooltopDiv } from '../styles/Layout';
-import { Title, Item } from '../styles/Text';
-import { Tooltip } from '../types/Chart';
+import { TooltopDiv } from 'styles/Layout';
+import { Title, Item } from 'styles/Text';
+import { Tooltip } from 'types/Chart';
 
 const CustomTooltip = ({ active, payload }: Tooltip) => {
   if (active && payload) {
