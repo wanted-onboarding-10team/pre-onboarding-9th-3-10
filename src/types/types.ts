@@ -1,7 +1,7 @@
 export interface DataType {
-  [key: string]: {
-    id: string;
-    value_area: number;
-    value_bar: number;
-  };
+  day: string;
+  time: string;
+  id: string;
+  value_area: number;
+  value_bar: number;
 }
