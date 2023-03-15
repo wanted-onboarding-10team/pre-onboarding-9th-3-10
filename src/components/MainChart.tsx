@@ -4,17 +4,19 @@ import { Data } from 'types/types';
 import CustomTooltip from './CustomTooltip';
 
 const MainChart = ({ datas }: { datas: Data[] }) => {
-  const [activeIndex, setActiveIndex] = useState<number | undefined>(undefined);
-  const handleBarClick = (data: any, index: number) => {
+  const [activeIndex, setActiveIndex] = useState<number | undefined>();
+
+  const handleBarClick = (_: any, index: number) => {
     setActiveIndex(index);
   };
+
   return (
     <ComposedChart
       width={2000}
       height={400}
       data={datas}
       margin={{
-        top: 20,
+        top: 40,
         right: 80,
         bottom: 20,
         left: 80,
@@ -23,29 +25,38 @@ const MainChart = ({ datas }: { datas: Data[] }) => {
       <Legend verticalAlign='bottom' height={36} />
       <XAxis
         dataKey='date'
-        label={{ value: 'date', position: 'insideBottomRight', offset: 0 }}
+        label={{ value: 'date', position: 'insideBottomRight', offset: 6 }}
         scale='auto'
         minTickGap={30}
       />
       <YAxis
+        yAxisId='value_bar'
         dataKey='value_bar'
-        label={{ value: 'value_bar', angle: -90, position: 'insideLeft' }}
+        label={{ value: 'value_bar', position: 'top', offset: 15 }}
+      />
+      <YAxis
+        yAxisId='value_area'
+        dataKey='value_area'
+        orientation='right'
+        label={{ value: `value_area`, position: 'top', offset: 15 }}
       />
       <XAxis hide={true} dataKey='id' />
       <Tooltip position={{ y: -10 }} content={CustomTooltip} wrapperStyle={{ outline: 'none' }} />
       <Area
-        type='monotone'
+        yAxisId='value_area'
         dataKey='value_area'
+        type='monotone'
         fill='url(#color1)'
         fillOpacity={1}
         stroke='#ffb700'
       />
       <Bar
+        yAxisId='value_bar'
         dataKey='value_bar'
         onClick={handleBarClick}
-        animationEasing={'ease-in-out'}
         fill={'#5388D899'}
         radius={[3, 3, 0, 0]}
+        animationEasing={'ease-in-out'}
       >
         {datas.map((entry, index) => (
           <Cell key={`cell-${index}`} fill={activeIndex === index ? '#F4BE37' : 'url(#color2)'} />
