@@ -4,7 +4,7 @@ import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipCont
 import img from 'assets/tooltipBox.png';
 import styled from '@emotion/styled';
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
+const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>) => {
   if (active && payload && payload.length) {
     const {
       payload: { id, value_area, value_bar },
