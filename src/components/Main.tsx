@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import {
   LineChart,
@@ -18,7 +18,6 @@ import { DataType } from 'types/types';
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
-    console.log(payload);
     const item = payload[0].payload;
     return (
       <div className='custom-tooltip'>
@@ -34,14 +33,45 @@ const CustomTooltip = ({ active, payload }: any) => {
 function Main() {
   const data = useLoaderData() as DataType[];
 
-  console.log(data);
+  const ids = data.map(item => item.id);
+  const region = Array.from(new Set<string>(ids));
+
+  const checkedRegion = useRef<string[]>([]);
+  const [filteringData, setFilteringData] = useState<string[]>([]);
+
+  const OnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const eventValue = event.target.value;
+    const checked = event.target.checked;
+
+    checked
+      ? (checkedRegion.current = [eventValue, ...checkedRegion.current])
+      : (checkedRegion.current = checkedRegion.current.filter(item => item !== eventValue));
+
+    const newDate = data.reduce((prev: any, cur: any) => {
+      checkedRegion.current.map(val => {
+        if (cur.id === val) {
+          prev.push(cur);
+        }
+      });
+      return prev;
+    }, []);
+    setFilteringData(newDate);
+  };
+  console.log(checkedRegion);
+  console.log(filteringData);
 
   return (
     <>
-      hello
+      {region.map(item => (
+        <label key={item}>
+          <input type='checkbox' onChange={OnChange} value={item} />
+          <span>{item}</span>
+        </label>
+      ))}
+
       {/* <ResponsiveContainer width='100%' height='100%'> */}
       <ComposedChart
-        data={data}
+        data={filteringData}
         width={1000}
         height={500}
         margin={{
