@@ -16,6 +16,21 @@ import {
 } from 'recharts';
 import { DataType } from 'types/types';
 
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    console.log(payload);
+    const item = payload[0].payload;
+    return (
+      <div className='custom-tooltip'>
+        <p>지역 : {item.id}</p>
+        <p>Area : {item.value_area}</p>
+        <p>Bar : {item.value_bar}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
 function Main() {
   const data = useLoaderData() as DataType[];
 
@@ -48,7 +63,7 @@ function Main() {
           orientation='right'
           label={{ value: 'bar', offset: 30, angle: 0, position: 'top' }}
         />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
         <Legend />
 
         <Bar dataKey='value_bar' yAxisId='right' barSize={5} fill='#82ca9d' />
