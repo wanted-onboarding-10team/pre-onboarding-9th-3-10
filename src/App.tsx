@@ -44,7 +44,7 @@ function App() {
     setFilterId(searchParams.get('id'));
   }, [searchParams]);
 
-  const handleFilter = (e: any, id: number) => {
+  const handleFilter = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
     if (e.target.checked) navigate(`/items?id=${id}`);
     else {
       navigate(`/`);
