@@ -13,7 +13,7 @@ function App() {
   const filteringData = mockData?.map(item => item.id) ?? [];
   const category = filteringData.filter((item, index) => filteringData.indexOf(item) === index);
 
-  const [test, setTest] = useState<string | null>();
+  const [filterId, setFilterId] = useState<string | null>();
   const searchParams = new URLSearchParams(location.search);
 
   const getMockData = async () => {
@@ -35,13 +35,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    test
-      ? setChartData(mockData?.filter(v => v.id === category[Number(test)]))
+    filterId
+      ? setChartData(mockData?.filter(v => v.id === category[Number(filterId)]))
       : setChartData(mockData);
-  }, [test]);
+  }, [filterId]);
 
   useEffect(() => {
-    setTest(searchParams.get('id'));
+    setFilterId(searchParams.get('id'));
   }, [searchParams]);
 
   const handleFilter = (e: any, id: number) => {
@@ -60,7 +60,7 @@ function App() {
             type='checkbox'
             value={idx}
             onChange={e => handleFilter(e, idx)}
-            checked={test !== null && idx === Number(test)}
+            checked={filterId !== null && idx === Number(filterId)}
           />
         </div>
       ))}
