@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Stack } from '@chakra-ui/react';
-import { useLoaderData } from 'react-router-dom';
-
+import { Box, CheckboxGroup, Heading, Stack } from '@chakra-ui/react';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Data, OriginData } from 'types/types';
 import MainChart from 'components/MainChart';
-import IdCheckboxs from './../components/Checkboxs';
+import IdCheckboxs from 'components/Checkboxs';
 
 const MainPage = () => {
   const orginData = useLoaderData() as OriginData;
+
   const [datas, setDatas] = useState<Data[]>([]);
   const [locals, setLocals] = useState<string[]>([]);
+  const [idSelect, setIdSelect] = useState<string[]>([]);
+
+  const keys = Object.keys(orginData);
+  const val = Object.values(orginData);
+  const [date, _] = keys[0].split(' ');
 
   useEffect(() => {
-    const keys = Object.keys(orginData);
-    const val = Object.values(orginData);
-
     setDatas(
       val.map((e, idx) => {
         const [_, time] = keys[idx].split(' ');
@@ -35,13 +37,17 @@ const MainPage = () => {
 
   return (
     <>
-      <div>2023-02-01</div>
-      <Stack spacing={5} direction='row'>
-        {locals.map(element => (
-          <IdCheckboxs key={element + 'keys'} element={element} />
-        ))}
-      </Stack>
-      <MainChart datas={datas} />
+      <Heading>{date}</Heading>
+      <Box borderRadius='lg' borderWidth='1px' p='2'>
+        <Stack spacing={5} direction='row'>
+          <CheckboxGroup colorScheme={'green'} onChange={(value: string[]) => setIdSelect(value)}>
+            {locals.map(element => (
+              <IdCheckboxs key={element + 'keys'} element={element} />
+            ))}
+          </CheckboxGroup>
+        </Stack>
+      </Box>
+      <MainChart datas={datas} idSelect={idSelect} />
     </>
   );
 };

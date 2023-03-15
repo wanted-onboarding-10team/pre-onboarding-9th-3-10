@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar, XAxis, Tooltip, YAxis, Legend, Area, ComposedChart, Cell, Brush } from 'recharts';
 import { Data } from 'types/types';
 import CustomTooltip from './CustomTooltip';
 
-const MainChart = ({ datas }: { datas: Data[] }) => {
-  const [activeIndex, setActiveIndex] = useState<number | undefined>();
+const MainChart = ({ datas, idSelect }: { datas: Data[]; idSelect: string[] }) => {
+  const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
 
-  const handleBarClick = (_: any, index: number) => {
-    setActiveIndex(index);
+  useEffect(() => {
+    setActiveIndex(
+      datas.reduce<number[]>((acc, cur, idx, arr) => {
+        if (idSelect.includes(cur.id)) acc.push(idx);
+        return acc;
+      }, []),
+    );
+  }, [idSelect]);
+
+  const handleBarClick = (data: any, index: number) => {
+    setActiveIndex(activeIndex?.concat(index));
   };
 
   return (
@@ -59,7 +68,10 @@ const MainChart = ({ datas }: { datas: Data[] }) => {
         animationEasing={'ease-in-out'}
       >
         {datas.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={activeIndex === index ? '#F4BE37' : 'url(#color2)'} />
+          <Cell
+            key={`cell-${index}`}
+            fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
+          />
         ))}
       </Bar>
       <Brush dataKey='date' height={30} stroke='#5388D899' />
