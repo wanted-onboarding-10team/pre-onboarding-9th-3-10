@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Checkbox, Stack } from '@chakra-ui/react';
-import CustomTooltip from 'components/CustomTooltip';
+import { Stack } from '@chakra-ui/react';
 import { useLoaderData } from 'react-router-dom';
 
 import { Data, OriginData } from 'types/types';
@@ -11,39 +10,35 @@ const MainPage = () => {
   const orginData = useLoaderData() as OriginData;
   const [datas, setDatas] = useState<Data[]>([]);
   const [locals, setLocals] = useState<string[]>([]);
-  const [bChecked, setChecked] = useState(false);
-
-  const keys = Object.keys(orginData);
-  const val = Object.values(orginData);
 
   useEffect(() => {
+    const keys = Object.keys(orginData);
+    const val = Object.values(orginData);
+
     setDatas(
       val.map((e, idx) => {
+        const [_, time] = keys[idx].split(' ');
         return {
           ...e,
-          date: keys[idx].split(' ')[1],
-          value_bar: val[idx].value_bar / 100, //data Normalization to kilo
+          date: time,
+          value_bar: val[idx].value_bar / 100, //Data Normalization
         };
       }),
     );
   }, []);
 
   useEffect(() => {
-    const setID: Set<string> = new Set();
-    datas.forEach(e => setID.add(e.id));
-    setLocals([...Array.from(setID)]);
+    const deduplID: Set<string> = new Set();
+    datas.forEach(e => deduplID.add(e.id));
+    setLocals([...Array.from(deduplID)]);
   }, [datas]);
-
-  const checkHandler = (e: React.ChangeEvent) => {
-    -1;
-  };
 
   return (
     <>
       <div>2023-02-01</div>
       <Stack spacing={5} direction='row'>
         {locals.map(element => (
-          <IdCheckboxs key={element + 'keys'} element={element} checkHandler={checkHandler} />
+          <IdCheckboxs key={element + 'keys'} element={element} />
         ))}
       </Stack>
       <MainChart datas={datas} />
