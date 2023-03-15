@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
-import { getChart } from '../api/api';
-import type { Chart, ChartResponse } from '../types/Chart';
+import { getChart } from 'api/api';
+import type { Chart, ChartResponse } from 'types/Chart';
 
 const useChart = () => {
   const [chartData, setChartData] = useState<Chart[]>([]);
