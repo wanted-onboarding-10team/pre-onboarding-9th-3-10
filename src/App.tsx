@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ChartDataType, MockDataType } from 'types/data';
 import { getMockDataApi } from 'utils/api/chart';
 import { useNavigate } from 'react-router-dom';
+import * as S from 'style/FilterCategory';
 
 function App() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ function App() {
   }, [searchParams]);
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    if (e.target.checked) navigate(`/items?id=${id}`);
+    if (e.target.checked) navigate(`/charts?id=${id}`);
     else {
       navigate(`/`);
     }
@@ -53,17 +54,20 @@ function App() {
 
   return (
     <MainLayout>
-      {category.map((id, idx) => (
-        <div key={idx}>
-          {id}
-          <input
-            type='checkbox'
-            value={idx}
-            onChange={e => handleFilter(e, idx)}
-            checked={filterId !== null && idx === Number(filterId)}
-          />
-        </div>
-      ))}
+      <S.Category>
+        {category.map((id, idx) => (
+          <div key={idx}>
+            <input
+              type='checkbox'
+              id={id}
+              value={idx}
+              onChange={e => handleFilter(e, idx)}
+              checked={filterId !== null && idx === Number(filterId)}
+            />
+            <label htmlFor={id}>{id}</label>
+          </div>
+        ))}
+      </S.Category>
       <Chart data={chartData} />
     </MainLayout>
   );
