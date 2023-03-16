@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, CheckboxGroup, Heading, Stack } from '@chakra-ui/react';
+import { Box, Heading, Stack } from '@chakra-ui/react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Data, OriginData } from 'types/types';
 import MainChart from 'components/MainChart';
-import IdCheckboxs from 'components/Checkboxs';
 import MainLayout from 'components/common/MainLayout';
+import FilterButtons from 'components/FilterButtons';
 
 const MainPage = () => {
   const orginData = useLoaderData() as OriginData;
@@ -47,26 +47,12 @@ const MainPage = () => {
     setIdRange(deduplID);
   }, [datas]);
 
-  const onSelect = (value: string[]) => {
-    let str = 'check=';
-    value.forEach(e => (str = str.concat(e, '_')));
-    setQuery(str);
-  };
-
   return (
     <MainLayout>
       <Heading>{date}</Heading>
       <Box borderRadius='lg' borderWidth='1px' p='2'>
         <Stack spacing={5} direction='row'>
-          <CheckboxGroup
-            colorScheme={'yellow'}
-            onChange={(value: string[]) => onSelect(value)}
-            value={[...idSelect]}
-          >
-            {idRange.map(element => {
-              return <IdCheckboxs key={element} element={element} />;
-            })}
-          </CheckboxGroup>
+          <FilterButtons idRange={idRange} onChange={setIdSelect} idSelect={idSelect} />
         </Stack>
       </Box>
       <MainChart datas={datas} idSelect={idSelect} />
