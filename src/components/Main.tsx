@@ -1,6 +1,7 @@
-import React, { PureComponent, useRef, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import React, { PureComponent, useEffect, useRef, useState } from 'react';
+import { useLoaderData, useSearchParams } from 'react-router-dom';
 import {
+  Cell,
   LineChart,
   Line,
   ComposedChart,
@@ -14,7 +15,7 @@ import {
   Scatter,
   ResponsiveContainer,
 } from 'recharts';
-import { DataType } from 'types/types';
+import { DataType, newDataType } from 'types/types';
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -36,42 +37,39 @@ function Main() {
   const ids = data.map(item => item.id);
   const region = Array.from(new Set<string>(ids));
 
-  const checkedRegion = useRef<string[]>([]);
-  const [filteringData, setFilteringData] = useState<string[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const id = searchParams.get('id');
 
   const OnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const eventValue = event.target.value;
-    const checked = event.target.checked;
-
-    checked
-      ? (checkedRegion.current = [eventValue, ...checkedRegion.current])
-      : (checkedRegion.current = checkedRegion.current.filter(item => item !== eventValue));
-
-    const newDate = data.reduce((prev: any, cur: any) => {
-      checkedRegion.current.map(val => {
-        if (cur.id === val) {
-          prev.push(cur);
-        }
-      });
-      return prev;
-    }, []);
-    setFilteringData(newDate);
+    setSearchParams({ id: eventValue });
   };
-  console.log(checkedRegion);
-  console.log(filteringData);
+
+  const handleClick = (data: any) => {
+    setSearchParams({ id: data.id });
+  };
 
   return (
     <>
+      <div>지역 선택 : {id}</div>
       {region.map(item => (
         <label key={item}>
-          <input type='checkbox' onChange={OnChange} value={item} />
+          <input
+            type='radio'
+            name='region'
+            onChange={OnChange}
+            value={item}
+            checked={id === item ? true : false}
+          />
+
           <span>{item}</span>
         </label>
       ))}
+      <button onClick={() => setSearchParams()}>해제</button>
 
       {/* <ResponsiveContainer width='100%' height='100%'> */}
       <ComposedChart
-        data={filteringData}
+        data={data}
         width={1000}
         height={500}
         margin={{
@@ -95,9 +93,16 @@ function Main() {
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
-
-        <Bar dataKey='value_bar' yAxisId='right' barSize={5} fill='#82ca9d' />
-        <Area type='monotone' dataKey='value_area' fill='#8884d8' stroke='#8884d8' />
+        <Area type='monotone' dataKey='value_area' fill='yellow' stroke='yellow' />
+        <Bar dataKey='value_bar' yAxisId='right' barSize={5} onClick={handleClick}>
+          {data.map((item, index) => (
+            <Cell
+              cursor='pointer'
+              fill={item.id === id ? 'red' : '#8884d8'}
+              key={`cell-${index}`}
+            />
+          ))}
+        </Bar>
       </ComposedChart>
       {/* </ResponsiveContainer> */}
     </>

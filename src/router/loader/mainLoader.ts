@@ -6,7 +6,11 @@ const mainLoader = async () => {
   } = await getApi();
 
   const data = Object.keys(response).map(item => {
-    return { day: item.split(' ')[0], time: item.split(' ')[1], ...response[item] };
+    return {
+      day: item.split(' ')[0],
+      time: item.split(' ')[1],
+      ...response[item],
+    };
   });
 
   return data;
