@@ -29,7 +29,7 @@ const Button = styled.button`
   border-radius: 3px;
   &:hover {
     background: palevioletred;
-    color: white};
+    color: white;
   }
 `;
 
