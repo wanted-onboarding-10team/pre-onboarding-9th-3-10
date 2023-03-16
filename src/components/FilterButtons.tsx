@@ -13,7 +13,7 @@ const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
 
   useEffect(() => {
     let str = 'check=';
-    idSelect.forEach(e => (str = str.concat(e, '_')));
+    str = idSelect.map(v => str + v).join('&');
     setQuery(str);
   }, [idSelect]);
 

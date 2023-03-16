@@ -32,14 +32,6 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    const arr = query.get('check')?.split('_');
-    arr?.pop();
-    if (arr !== undefined) {
-      setIdSelect([...arr]);
-    }
-  }, [query]);
-
-  useEffect(() => {
     const deduplID = datas.reduce<string[]>((acc, cur) => {
       acc.includes(cur.id) ? acc : acc.push(cur.id);
       return acc;
