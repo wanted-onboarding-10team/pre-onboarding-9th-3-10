@@ -1,20 +1,24 @@
-import { FilterBtn } from '../styles/Button';
-import { FilterDiv } from '../styles/Layout';
+import { FilterBtn } from 'styles/Button';
+import { FilterDiv } from 'styles/Layout';
 
 interface FilterProps {
   locations: string[];
+  location: string;
   changeLocation: (value: string) => void;
 }
 
-const Filter = ({ locations, changeLocation }: FilterProps) => {
+const Filter = ({ locations, location, changeLocation }: FilterProps) => {
   return (
     <FilterDiv>
       {locations.map((item, index) => (
-        <FilterBtn key={index} onClick={() => changeLocation(item)}>
+        <FilterBtn
+          className={location === item ? 'active' : ''}
+          key={index}
+          onClick={() => changeLocation(item)}
+        >
           {item}
         </FilterBtn>
       ))}
-      <FilterBtn onClick={() => changeLocation('')}>Reset</FilterBtn>
     </FilterDiv>
   );
 };

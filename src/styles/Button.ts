@@ -17,9 +17,13 @@ export const FilterBtn = styled.button`
   height: 30px;
   margin-right: 10px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  background: rgba(0, 0, 0, 0.1);
+  background: 'rgba(0, 0, 0, 0.1)';
   color: #696969;
   cursor: pointer;
   border-radius: 20px;
-  font-family: 'NotoSansB';
+
+  &.active {
+    background-color: #505bf0;
+    color: #fff;
+  }
 `;

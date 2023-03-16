@@ -15,7 +15,7 @@ const App = () => {
   return (
     <ChartDiv>
       <ChartList data={data} location={location} changeLocation={changeLocation} />
-      <Filter locations={locations} changeLocation={changeLocation} />
+      <Filter locations={locations} location={location} changeLocation={changeLocation} />
     </ChartDiv>
   );
 };
