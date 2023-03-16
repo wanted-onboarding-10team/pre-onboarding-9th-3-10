@@ -16,28 +16,28 @@ import CustomTooltip from './CustomTooltip';
 
 interface MainChartProps {
   datas: Data[];
-  idSelect: string[];
+  selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
+const MainChart = ({ datas, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
 
   useEffect(() => {
     setActiveIndex(
       datas.reduce<number[]>((acc, cur, idx, arr) => {
-        if (idSelect.includes(cur.id)) acc.push(idx);
+        if (selectedCategory.includes(cur.id)) acc.push(idx);
         return acc;
       }, []),
     );
-  }, [idSelect]);
+  }, [selectedCategory]);
 
   const handleBarClick = (data: BarProps) => {
     if (data.id !== undefined) {
-      if (idSelect.includes(data.id)) {
-        onChange(idSelect.filter(v => v !== data.id));
+      if (selectedCategory.includes(data.id)) {
+        onChange(selectedCategory.filter(v => v !== data.id));
       } else {
-        onChange([...idSelect, data.id]);
+        onChange([...selectedCategory, data.id]);
       }
     }
   };

@@ -5,7 +5,7 @@ export interface Data {
   value_bar: number;
 }
 
-export interface OriginData {
+export interface MockData {
   [date: string]: {
     id: string;
     value_area: number;

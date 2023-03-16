@@ -3,38 +3,38 @@ import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 
 interface IdBottonProps {
-  idRange: string[];
-  idSelect: string[];
+  category: string[];
+  selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
+const FilterButtons = ({ category, onChange, selectedCategory }: IdBottonProps) => {
   const [_, setQuery] = useSearchParams();
 
   useEffect(() => {
     const parameter = 'check=';
     let queryString = '';
-    queryString = idSelect.map(v => parameter + v).join('&');
+    queryString = selectedCategory.map(v => parameter + v).join('&');
     setQuery(queryString);
-  }, [idSelect]);
+  }, [selectedCategory]);
 
   const onSelect = (value: string) => {
-    if (idSelect.includes(value)) {
-      onChange(idSelect.filter(v => v !== value));
+    if (selectedCategory.includes(value)) {
+      onChange(selectedCategory.filter(v => v !== value));
     } else {
-      onChange([...idSelect, value]);
+      onChange([...selectedCategory, value]);
     }
   };
 
   return (
     <>
       <ButtonGroup colorScheme={'gray'}>
-        {idRange.map(element => {
+        {category.map(element => {
           return (
             <Button
               key={element}
               value={element}
-              isActive={idSelect.includes(element)}
+              isActive={selectedCategory.includes(element)}
               onClick={() => onSelect(element)}
             >
               {element}
