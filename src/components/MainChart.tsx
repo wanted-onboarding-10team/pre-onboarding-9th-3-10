@@ -12,7 +12,7 @@ import {
   BarProps,
 } from 'recharts';
 import { ChartData } from 'types/types';
-import CustomTooltip from './CustomTooltip';
+import { CustomTooltip } from 'components';
 
 interface MainChartProps {
   chartData: ChartData[];
