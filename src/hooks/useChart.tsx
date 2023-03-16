@@ -8,7 +8,7 @@ const useChart = () => {
 
   const locations = useMemo(() => {
     if (!chartData) return [];
-    return [...new Set(chartData.map(data => data.id))];
+    return [...new Set(chartData.map(data => data.id)), 'Resert'];
   }, [chartData]);
 
   useEffect(() => {
