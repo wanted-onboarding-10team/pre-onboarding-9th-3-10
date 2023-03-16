@@ -39,6 +39,9 @@ const MainPage = () => {
     setIdRange(deduplID);
   }, [datas]);
 
+  useEffect(() => {
+    setIdSelect(query.getAll('check'));
+  }, [query]);
   return (
     <MainLayout>
       <Heading size={'lg'}>{date}</Heading>
