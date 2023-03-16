@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { ChartData, MockData } from 'types/types';
-import MainChart from 'components/MainChart';
-import MainLayout from 'components/common/MainLayout';
-import FilterButtons from 'components/FilterButtons';
+import { MainChart, MainLayout, FilterButtons } from 'components';
 
 const MainPage = () => {
   const mockData = useLoaderData() as MockData;
