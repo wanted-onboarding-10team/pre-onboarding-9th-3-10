@@ -2,8 +2,6 @@ import React, { PureComponent, useEffect, useRef, useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import {
   Cell,
-  LineChart,
-  Line,
   ComposedChart,
   Area,
   Bar,
@@ -16,16 +14,17 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { DataType, newDataType } from 'types/types';
+import { StyledTooltip } from 'styles/style';
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const item = payload[0].payload;
     return (
-      <div className='custom-tooltip'>
+      <StyledTooltip className='custom-tooltip'>
         <p>지역 : {item.id}</p>
         <p>Area : {item.value_area}</p>
         <p>Bar : {item.value_bar}</p>
-      </div>
+      </StyledTooltip>
     );
   }
   return null;
@@ -51,7 +50,7 @@ function Main() {
 
   return (
     <>
-      <div>지역 선택 : {id}</div>
+      <span>지역 선택</span>
       {region.map(item => (
         <label key={item}>
           <input
@@ -67,7 +66,6 @@ function Main() {
       ))}
       <button onClick={() => setSearchParams()}>해제</button>
 
-      {/* <ResponsiveContainer width='100%' height='100%'> */}
       <ComposedChart
         data={data}
         width={1000}
@@ -93,18 +91,17 @@ function Main() {
         />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
-        <Area type='monotone' dataKey='value_area' fill='yellow' stroke='yellow' />
+        <Area type='monotone' dataKey='value_area' fill='#A8FFA2' stroke='#A8FFA2' />
         <Bar dataKey='value_bar' yAxisId='right' barSize={5} onClick={handleClick}>
           {data.map((item, index) => (
             <Cell
               cursor='pointer'
-              fill={item.id === id ? 'red' : '#8884d8'}
+              fill={item.id === id ? '#0CD9E8' : '#E6E6E6'}
               key={`cell-${index}`}
             />
           ))}
         </Bar>
       </ComposedChart>
-      {/* </ResponsiveContainer> */}
     </>
   );
 }
