@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import {
   Cell,
@@ -11,10 +11,9 @@ import {
   Tooltip,
   Legend,
   Scatter,
-  ResponsiveContainer,
 } from 'recharts';
-import { DataType, newDataType } from 'types/types';
-import { StyledTooltip } from 'styles/style';
+import { DataType } from 'types/types';
+import { StyledTooltip, StyledHead } from 'styles/style';
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -50,22 +49,23 @@ function Main() {
 
   return (
     <>
-      <span>지역 선택</span>
-      {region.map(item => (
-        <label key={item}>
-          <input
-            type='radio'
-            name='region'
-            onChange={OnChange}
-            value={item}
-            checked={id === item ? true : false}
-          />
+      <StyledHead>
+        <span>지역 선택</span>
+        {region.map(item => (
+          <label key={item}>
+            <input
+              type='radio'
+              name='region'
+              onChange={OnChange}
+              value={item}
+              checked={id === item ? true : false}
+            />
 
-          <span>{item}</span>
-        </label>
-      ))}
-      <button onClick={() => setSearchParams()}>해제</button>
-
+            <span>{item}</span>
+          </label>
+        ))}
+        <button onClick={() => setSearchParams()}>해제</button>
+      </StyledHead>
       <ComposedChart
         data={data}
         width={1000}
