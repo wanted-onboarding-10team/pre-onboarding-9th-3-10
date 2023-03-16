@@ -11,6 +11,7 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
+import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart';
 import { Data } from 'types/types';
 import CustomTooltip from './CustomTooltip';
 
@@ -32,12 +33,19 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
     );
   }, [idSelect]);
 
-  const handleBarClick = (data: BarProps) => {
-    if (data.id !== undefined) onChange([data.id]);
+  const handleChartClick = (data: CategoricalChartState) => {
+    if (!data.activePayload) return;
+
+    const {
+      payload: { id },
+    } = data.activePayload[0];
+
+    if (id !== undefined) onChange([id]);
   };
 
   return (
     <ComposedChart
+      onClick={handleChartClick}
       width={2000}
       height={400}
       data={datas}
@@ -82,7 +90,6 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
       <Bar
         yAxisId='value_bar'
         dataKey='value_bar'
-        onClick={handleBarClick}
         fill={'#5388D899'}
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
