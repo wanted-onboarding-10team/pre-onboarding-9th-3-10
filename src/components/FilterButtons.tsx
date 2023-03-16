@@ -9,12 +9,13 @@ interface IdBottonProps {
 }
 
 const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
-  const [query, setQuery] = useSearchParams();
+  const [_, setQuery] = useSearchParams();
 
   useEffect(() => {
-    let str = 'check=';
-    str = idSelect.map(v => str + v).join('&');
-    setQuery(str);
+    const parameter = 'check=';
+    let queryString = '';
+    queryString = idSelect.map(v => parameter + v).join('&');
+    setQuery(queryString);
   }, [idSelect]);
 
   const onSelect = (value: string) => {
