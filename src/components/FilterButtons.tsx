@@ -3,12 +3,12 @@ import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 
 interface IdBottonProps {
-  idRange: string[];
+  areaList: string[];
   idSelect: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
+const FilterButtons = ({ areaList, onChange, idSelect }: IdBottonProps) => {
   const [query, setQuery] = useSearchParams();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
   return (
     <>
       <ButtonGroup colorScheme={'gray'}>
-        {idRange.map(element => {
+        {areaList.map(element => {
           return (
             <Button
               key={element}
