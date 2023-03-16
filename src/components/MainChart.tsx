@@ -11,21 +11,21 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
-import { Data } from 'types/types';
+import { ChartData } from 'types/types';
 import CustomTooltip from './CustomTooltip';
 
 interface MainChartProps {
-  datas: Data[];
+  chartData: ChartData[];
   selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const MainChart = ({ datas, selectedCategory, onChange }: MainChartProps) => {
+const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
 
   useEffect(() => {
     setActiveIndex(
-      datas.reduce<number[]>((acc, cur, idx, arr) => {
+      chartData.reduce<number[]>((acc, cur, idx, arr) => {
         if (selectedCategory.includes(cur.id)) acc.push(idx);
         return acc;
       }, []),
@@ -46,7 +46,7 @@ const MainChart = ({ datas, selectedCategory, onChange }: MainChartProps) => {
     <ComposedChart
       width={2000}
       height={400}
-      data={datas}
+      data={chartData}
       margin={{
         top: 40,
         right: 80,
@@ -93,7 +93,7 @@ const MainChart = ({ datas, selectedCategory, onChange }: MainChartProps) => {
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
       >
-        {datas.map((entry, index) => (
+        {chartData.map((entry, index) => (
           <Cell
             key={`cell-${index}`}
             fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}

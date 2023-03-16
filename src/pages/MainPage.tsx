@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-import { Data, MockData } from 'types/types';
+import { ChartData, MockData } from 'types/types';
 import MainChart from 'components/MainChart';
 import MainLayout from 'components/common/MainLayout';
 import FilterButtons from 'components/FilterButtons';
@@ -10,8 +10,8 @@ const MainPage = () => {
   const mockData = useLoaderData() as MockData;
   const [query, setQuery] = useSearchParams();
 
-  const [datas, setDatas] = useState<Data[]>([]);
-  const [category, setCategory] = useState<string[]>([]);
+  const [chartData, setDatas] = useState<ChartData[]>([]);
+  const [category, setChartData] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
   const keys = Object.keys(mockData);
@@ -25,19 +25,19 @@ const MainPage = () => {
         return {
           ...e,
           date: time,
-          value_bar: val[idx].value_bar / 100, //Data Normalization
+          value_bar: val[idx].value_bar / 100, //ChartData Normalization
         };
       }),
     );
   }, []);
 
   useEffect(() => {
-    const deduplID = datas.reduce<string[]>((acc, cur) => {
+    const deduplID = chartData.reduce<string[]>((acc, cur) => {
       acc.includes(cur.id) ? acc : acc.push(cur.id);
       return acc;
     }, []);
-    setCategory(deduplID);
-  }, [datas]);
+    setChartData(deduplID);
+  }, [chartData]);
 
   useEffect(() => {
     setSelectedCategory(query.getAll('check'));
@@ -61,7 +61,11 @@ const MainPage = () => {
           </Stack>
         </Box>
       </Flex>
-      <MainChart datas={datas} onChange={setSelectedCategory} selectedCategory={selectedCategory} />
+      <MainChart
+        chartData={chartData}
+        onChange={setSelectedCategory}
+        selectedCategory={selectedCategory}
+      />
     </MainLayout>
   );
 };
