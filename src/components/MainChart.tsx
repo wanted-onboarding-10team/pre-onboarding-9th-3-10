@@ -53,7 +53,7 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
 
       <XAxis
         dataKey='date'
-        label={{ value: 'date', position: 'insideBottomRight', offset: 6 }}
+        label={{ value: 'time', position: 'left', offset: 6 }}
         scale='auto'
         minTickGap={30}
       />
@@ -62,7 +62,7 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
         yAxisId='value_bar'
         dataKey='value_bar'
         orientation='left'
-        label={{ value: 'value_bar', position: 'top', offset: 15 }}
+        label={{ value: 'value_bar, Unit : K', position: 'top', offset: 15 }}
       />
       <YAxis
         yAxisId='value_area'
@@ -94,6 +94,7 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
           />
         ))}
       </Bar>
+
       <Brush dataKey='date' height={30} stroke='#5388D899' />
 
       <defs>

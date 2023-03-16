@@ -26,7 +26,7 @@ export default CustomTooltip;
 
 const Content = styled.div`
   padding: 10px;
-  width: 160px;
+  width: 170px;
   height: 110px;
   background-image: url(${img});
   background-size: 100% 100%;

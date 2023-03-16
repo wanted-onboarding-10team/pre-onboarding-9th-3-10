@@ -18,7 +18,6 @@ const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
   }, [idSelect]);
 
   const onSelect = (value: string) => {
-    console.log(idSelect);
     if (idSelect.includes(value)) {
       onChange(idSelect.filter(v => v !== value));
     } else {

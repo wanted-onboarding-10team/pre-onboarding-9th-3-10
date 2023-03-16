@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Heading, Stack } from '@chakra-ui/react';
+import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { Data, OriginData } from 'types/types';
 import MainChart from 'components/MainChart';
@@ -16,7 +16,7 @@ const MainPage = () => {
 
   const keys = Object.keys(orginData);
   const val = Object.values(orginData);
-  const [date, _] = keys[0].split(' ');
+  const [date] = keys[0].split(' ');
 
   useEffect(() => {
     setDatas(
@@ -49,12 +49,18 @@ const MainPage = () => {
 
   return (
     <MainLayout>
-      <Heading>{date}</Heading>
-      <Box borderRadius='lg' borderWidth='1px' p='2'>
-        <Stack spacing={5} direction='row'>
-          <FilterButtons idRange={idRange} onChange={setIdSelect} idSelect={idSelect} />
-        </Stack>
-      </Box>
+      <Heading size={'lg'}>{date}</Heading>
+      <Text marginBottom={2}>{date} 에 수집된 정보 시각화 차트</Text>
+      <Flex direction='column'>
+        <Text marginBottom='1' fontSize='.9rem' color='gray.400' fontWeight='700'>
+          ID 필터링
+        </Text>
+        <Box borderRadius='lg' borderWidth='1px' p='2'>
+          <Stack spacing={5} direction='row'>
+            <FilterButtons idRange={idRange} onChange={setIdSelect} idSelect={idSelect} />
+          </Stack>
+        </Box>
+      </Flex>
       <MainChart datas={datas} onChange={setIdSelect} idSelect={idSelect} />
     </MainLayout>
   );
