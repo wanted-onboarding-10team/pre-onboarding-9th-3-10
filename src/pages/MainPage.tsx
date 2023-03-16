@@ -55,7 +55,7 @@ const MainPage = () => {
           <FilterButtons idRange={idRange} onChange={setIdSelect} idSelect={idSelect} />
         </Stack>
       </Box>
-      <MainChart datas={datas} idSelect={idSelect} />
+      <MainChart datas={datas} onChange={setIdSelect} idSelect={idSelect} />
     </MainLayout>
   );
 };

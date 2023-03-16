@@ -1,9 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Bar, XAxis, Tooltip, YAxis, Legend, Area, ComposedChart, Cell, Brush } from 'recharts';
+import {
+  Bar,
+  XAxis,
+  Tooltip,
+  YAxis,
+  Legend,
+  Area,
+  ComposedChart,
+  Cell,
+  Brush,
+  BarProps,
+} from 'recharts';
 import { Data } from 'types/types';
 import CustomTooltip from './CustomTooltip';
 
-const MainChart = ({ datas, idSelect }: { datas: Data[]; idSelect: string[] }) => {
+interface MainChartProps {
+  datas: Data[];
+  idSelect: string[];
+  onChange: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
 
   useEffect(() => {
@@ -15,8 +32,8 @@ const MainChart = ({ datas, idSelect }: { datas: Data[]; idSelect: string[] }) =
     );
   }, [idSelect]);
 
-  const handleBarClick = (data: any, index: number) => {
-    setActiveIndex(activeIndex?.concat(index));
+  const handleBarClick = (data: BarProps) => {
+    if (data.id !== undefined) onChange([data.id]);
   };
 
   return (
