@@ -33,7 +33,13 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
   }, [idSelect]);
 
   const handleBarClick = (data: BarProps) => {
-    if (data.id !== undefined) onChange([data.id]);
+    if (data.id !== undefined) {
+      if (idSelect.includes(data.id)) {
+        onChange(idSelect.filter(v => v !== data.id));
+      } else {
+        onChange([...idSelect, data.id]);
+      }
+    }
   };
 
   return (
