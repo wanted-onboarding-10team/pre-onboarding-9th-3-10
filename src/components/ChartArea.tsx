@@ -30,6 +30,12 @@ const ChartArea = ({ chartData, clickedId, changeClickedIdByValue }: ChartAreaPa
           bottom: 20,
           left: 20,
         }}
+        onClick={state => {
+          const { activePayload } = state;
+          if (activePayload && activePayload.length > 0) {
+            changeClickedIdByValue(activePayload[0].payload.id);
+          }
+        }}
       >
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis dataKey='time' padding='gap' />
@@ -52,9 +58,9 @@ const ChartArea = ({ chartData, clickedId, changeClickedIdByValue }: ChartAreaPa
           yAxisId='area'
           type='monotone'
           dataKey='value_area'
-          fill='#9dc3e2'
-          stroke='#9dd2d8'
-          fillOpacity={1}
+          fill='#FFBF00'
+          stroke='#FFAC1C'
+          fillOpacity={0.8}
           name='Area'
         />
         <Bar
@@ -62,17 +68,13 @@ const ChartArea = ({ chartData, clickedId, changeClickedIdByValue }: ChartAreaPa
           name='Bar'
           dataKey='value_bar'
           barSize={10}
-          stroke='#fadce4'
-          fill='#ffb5cc'
-          fillOpacity={0.8}
-          onClick={data => {
-            changeClickedIdByValue(data.id);
-          }}
+          stroke='#50C878'
+          fill='#50C878'
         >
           {chartData?.map(entry => (
             <Cell
               key={entry.time}
-              fill={clickedId === entry.id ? '#2B5CE7' : 'rgba(43, 92, 231, 0.2)'}
+              fill={clickedId === entry.id ? '#50C878' : 'rgba(80, 200, 120, 0.4)'}
             />
           ))}
         </Bar>
