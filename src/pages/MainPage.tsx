@@ -7,8 +7,8 @@ import { ChartData } from 'types/types';
 const MainPage = () => {
   const mockData = useLoaderData() as ChartData[];
 
-  const [query, setQuery] = useSearchParams();
-  const category = Array.from(new Set<string>(mockData.map(data => data.id)));
+  const [query] = useSearchParams();
+  const areaCategory = Array.from(new Set<string>(mockData.map(data => data.id)));
   const [date] = mockData[0].date.split(' ');
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
@@ -27,7 +27,7 @@ const MainPage = () => {
         <Box borderRadius='lg' borderWidth='1px' p='2'>
           <Stack spacing={5} direction='row'>
             <FilterButtons
-              category={category}
+              areaCategory={areaCategory}
               onChange={setSelectedCategory}
               selectedCategory={selectedCategory}
             />
