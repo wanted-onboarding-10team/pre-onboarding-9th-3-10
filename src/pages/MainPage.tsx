@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { FilterButtons, MainChart, MainLayout } from 'components';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-import { FilterButtons, MainLayout, MainChart } from 'components';
-import { ChartData } from 'types/types';
+import { ChartDataByDay } from 'types/types';
 
 const MainPage = () => {
-  const mockData = useLoaderData() as ChartData[];
+  const chartData = useLoaderData() as ChartDataByDay;
+  const chartDays = Object.keys(chartData);
+  const selectedDay = chartDays[chartDays.length - 1];
+  const areaCategory = Array.from(new Set<string>(chartData[selectedDay].map(data => data.id)));
 
   const [query] = useSearchParams();
-  const areaCategory = Array.from(new Set<string>(mockData.map(data => data.id)));
-  const [date] = mockData[0].date.split(' ');
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
   useEffect(() => {
@@ -18,8 +19,8 @@ const MainPage = () => {
 
   return (
     <MainLayout>
-      <Heading size={'lg'}>{date}</Heading>
-      <Text marginBottom={2}>{date} 에 수집된 정보 시각화 차트</Text>
+      <Heading size={'lg'}>{selectedDay}</Heading>
+      <Text marginBottom={2}>{selectedDay} 에 수집된 정보 시각화 차트</Text>
       <Flex direction='column'>
         <Text marginBottom='1' fontSize='.9rem' color='gray.400' fontWeight='700'>
           ID 필터링
@@ -35,7 +36,7 @@ const MainPage = () => {
         </Box>
       </Flex>
       <MainChart
-        chartData={mockData}
+        chartData={chartData[selectedDay]}
         onChange={setSelectedCategory}
         selectedCategory={selectedCategory}
       />

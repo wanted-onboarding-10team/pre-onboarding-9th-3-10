@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Bar,
-  XAxis,
-  Tooltip,
-  YAxis,
-  Legend,
-  Area,
-  ComposedChart,
-  Cell,
-  Brush,
-  BarProps,
-} from 'recharts';
+import { Area, Bar, Brush, Cell, ComposedChart, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 
+import { CustomTooltip } from 'components';
 import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart';
 import { ChartData } from 'types/types';
-import { CustomTooltip } from 'components';
 
 interface MainChartProps {
   chartData: ChartData[];
@@ -82,7 +71,7 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
       <Tooltip position={{ y: -10 }} content={CustomTooltip} wrapperStyle={{ outline: 'none' }} />
 
       <XAxis
-        dataKey='date'
+        dataKey='time'
         label={{ value: 'time', position: 'left', offset: 6 }}
         scale='auto'
         minTickGap={30}
@@ -128,7 +117,7 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         stroke='#ffb700'
       />
 
-      <Brush dataKey='date' height={30} stroke='#5388D899' />
+      <Brush dataKey='time' height={30} stroke='#5388D899' />
 
       <defs>
         <linearGradient id={DataLabel.area} x1='0' y1='1.5' x2='0' y2='0'>
