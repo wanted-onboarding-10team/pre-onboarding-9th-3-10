@@ -5,14 +5,12 @@ import { ChartDataByDay } from 'types/types';
 
 const MainPage = () => {
   const chartData = useLoaderData() as ChartDataByDay;
+  const chartDays = Object.keys(chartData);
+  const showDay = chartDays[chartDays.length - 1];
 
   return (
     <MainLayout>
-      <>
-        {Object.entries(chartData).map(([day, chartDatasByDay]) => (
-          <DailyChart key={day} day={day} chartDatas={chartDatasByDay} />
-        ))}
-      </>
+      <DailyChart key={showDay} day={showDay} chartDatas={chartData[showDay]} />
     </MainLayout>
   );
 };
