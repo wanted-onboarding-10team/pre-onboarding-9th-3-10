@@ -38,7 +38,7 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
 
   useEffect(() => {
     setBrushIndex([0, chartData.length - 1]);
-  }, [chartData]);
+  }, []);
 
   useEffect(() => {
     setActiveIndex(
@@ -129,7 +129,17 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
           stroke='#ffb700'
         />
 
-        <Brush dataKey='time' height={30} stroke='#5388D899' />
+        <Brush
+          dataKey='date'
+          height={30}
+          stroke='#5388D899'
+          onChange={e => {
+            if (!e.startIndex || !e.endIndex) return;
+            setBrushIndex([e.startIndex, e.endIndex]);
+          }}
+          startIndex={brushIndex[0]}
+          endIndex={brushIndex[1]}
+        />
 
         <defs>
           <linearGradient id={DataLabel.area} x1='0' y1='1.5' x2='0' y2='0'>
