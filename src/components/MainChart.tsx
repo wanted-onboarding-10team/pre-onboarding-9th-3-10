@@ -11,8 +11,12 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
+
+import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart';
+import { Data } from 'types/types';
 import { ChartData } from 'types/types';
 import { CustomTooltip } from 'components';
+
 
 interface MainChartProps {
   chartData: ChartData[];
@@ -47,7 +51,13 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
     );
   }, [selectedCategory]);
 
-  const handleBarClick = (data: BarProps) => {
+  const handleChartClick = (data: CategoricalChartState) => {
+    if (!data.activePayload) return;
+
+    const {
+      payload: { id },
+    } = data.activePayload[0];
+
     if (data.id !== undefined) {
       if (selectedCategory.includes(data.id)) {
         onChange(selectedCategory.filter(v => v !== data.id));
@@ -59,6 +69,7 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
 
   return (
     <ComposedChart
+      onClick={handleChartClick}
       width={2000}
       height={400}
       data={chartData}
@@ -119,15 +130,23 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         fillOpacity={1}
         stroke='#ffb700'
       />
-      <Brush
-        dataKey='date'
-        height={30}
-        stroke='#5388D899'
-        onChange={e => {
-          if (!e.startIndex || !e.endIndex) return;
-          setBrushIndex([e.startIndex, e.endIndex]);
-        }}
-      />
+
+      <Bar
+        yAxisId='value_bar'
+        dataKey='value_bar'
+        fill={'#5388D899'}
+        radius={[3, 3, 0, 0]}
+        animationEasing={'ease-in-out'}
+      >
+        {datas.map((entry, index) => (
+          <Cell
+            key={`cell-${index}`}
+            fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
+          />
+        ))}
+      </Bar>
+
+      <Brush dataKey='date' height={30} stroke='#5388D899' />
 
       <defs>
         <linearGradient id={DataLabel.area} x1='0' y1='1.5' x2='0' y2='0'>
