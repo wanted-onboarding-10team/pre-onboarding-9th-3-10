@@ -11,12 +11,12 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
-import { Data } from 'types/types';
-import CustomTooltip from './CustomTooltip';
+import { ChartData } from 'types/types';
+import { CustomTooltip } from 'components';
 
 interface MainChartProps {
-  datas: Data[];
-  idSelect: string[];
+  chartData: ChartData[];
+  selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 const MainChartColor = {
@@ -30,27 +30,38 @@ const DataLabel = {
   area: 'value_area',
 } as const;
 
-const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
+const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
+  const [brushIndex, setBrushIndex] = useState<number[]>([]);
+
+  useEffect(() => {
+    setBrushIndex([0, datas.length - 1]);
+  }, [datas]);
 
   useEffect(() => {
     setActiveIndex(
-      datas.reduce<number[]>((acc, cur, idx, arr) => {
-        if (idSelect.includes(cur.id)) acc.push(idx);
+      chartData.reduce<number[]>((acc, cur, idx, arr) => {
+        if (selectedCategory.includes(cur.id)) acc.push(idx);
         return acc;
       }, []),
     );
-  }, [idSelect]);
+  }, [selectedCategory]);
 
   const handleBarClick = (data: BarProps) => {
-    if (data.id !== undefined) onChange([data.id]);
+    if (data.id !== undefined) {
+      if (selectedCategory.includes(data.id)) {
+        onChange(selectedCategory.filter(v => v !== data.id));
+      } else {
+        onChange([...selectedCategory, data.id]);
+      }
+    }
   };
 
   return (
     <ComposedChart
       width={2000}
       height={400}
-      data={datas}
+      data={chartData}
       margin={{
         top: 40,
         right: 80,
@@ -81,14 +92,6 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
         label={{ value: `value_area`, position: 'top', offset: 15 }}
       />
 
-      <Area
-        yAxisId={DataLabel.area}
-        dataKey={DataLabel.area}
-        type='monotone'
-        fill='url(#value_area)'
-        fillOpacity={1}
-        stroke='#ffb700'
-      />
       <Bar
         yAxisId={DataLabel.bar}
         dataKey={DataLabel.bar}
@@ -97,15 +100,34 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
       >
-        {datas.map((entry, index) => (
-          <Cell
-            key={`cell-${index}`}
-            fill={activeIndex?.includes(index) ? MainChartColor.yellow : 'url(#value_bar)'}
-          />
-        ))}
+        {datas.map((entry, index) => {
+          if (index >= brushIndex[0] && index <= brushIndex[1]) {
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
+              />
+            );
+          }
+        })}
       </Bar>
-
-      <Brush dataKey='date' height={30} stroke={MainChartColor.blue} />
+      <Area
+        yAxisId='value_area'
+        dataKey='value_area'
+        type='monotone'
+        fill='url(#color1)'
+        fillOpacity={1}
+        stroke='#ffb700'
+      />
+      <Brush
+        dataKey='date'
+        height={30}
+        stroke='#5388D899'
+        onChange={e => {
+          if (!e.startIndex || !e.endIndex) return;
+          setBrushIndex([e.startIndex, e.endIndex]);
+        }}
+      />
 
       <defs>
         <linearGradient id={DataLabel.area} x1='0' y1='1.5' x2='0' y2='0'>
