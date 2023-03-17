@@ -11,27 +11,45 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
+
 import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart';
 import { Data } from 'types/types';
-import CustomTooltip from './CustomTooltip';
+import { ChartData } from 'types/types';
+import { CustomTooltip } from 'components';
+
 
 interface MainChartProps {
-  datas: Data[];
-  idSelect: string[];
+  chartData: ChartData[];
+  selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
+const MainChartColor = {
+  yellow: '#ffb700',
+  blue: '#5388D899',
+  opacityGray: '#ffffff2d',
+} as const;
 
-const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
+const DataLabel = {
+  bar: 'value_bar',
+  area: 'value_area',
+} as const;
+
+const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
+  const [brushIndex, setBrushIndex] = useState<number[]>([]);
+
+  useEffect(() => {
+    setBrushIndex([0, datas.length - 1]);
+  }, [datas]);
 
   useEffect(() => {
     setActiveIndex(
-      datas.reduce<number[]>((acc, cur, idx, arr) => {
-        if (idSelect.includes(cur.id)) acc.push(idx);
+      chartData.reduce<number[]>((acc, cur, idx, arr) => {
+        if (selectedCategory.includes(cur.id)) acc.push(idx);
         return acc;
       }, []),
     );
-  }, [idSelect]);
+  }, [selectedCategory]);
 
   const handleChartClick = (data: CategoricalChartState) => {
     if (!data.activePayload) return;
@@ -40,7 +58,13 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
       payload: { id },
     } = data.activePayload[0];
 
-    if (id !== undefined) onChange([id]);
+    if (data.id !== undefined) {
+      if (selectedCategory.includes(data.id)) {
+        onChange(selectedCategory.filter(v => v !== data.id));
+      } else {
+        onChange([...selectedCategory, data.id]);
+      }
+    }
   };
 
   return (
@@ -48,7 +72,7 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
       onClick={handleChartClick}
       width={2000}
       height={400}
-      data={datas}
+      data={chartData}
       margin={{
         top: 40,
         right: 80,
@@ -67,18 +91,37 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
       />
       <XAxis hide={true} dataKey='id' />
       <YAxis
-        yAxisId='value_bar'
-        dataKey='value_bar'
+        yAxisId={DataLabel.bar}
+        dataKey={DataLabel.bar}
         orientation='left'
         label={{ value: 'value_bar, Unit : K', position: 'top', offset: 15 }}
       />
       <YAxis
-        yAxisId='value_area'
-        dataKey='value_area'
+        yAxisId={DataLabel.area}
+        dataKey={DataLabel.area}
         orientation='right'
         label={{ value: `value_area`, position: 'top', offset: 15 }}
       />
 
+      <Bar
+        yAxisId={DataLabel.bar}
+        dataKey={DataLabel.bar}
+        onClick={handleBarClick}
+        fill={MainChartColor.blue}
+        radius={[3, 3, 0, 0]}
+        animationEasing={'ease-in-out'}
+      >
+        {datas.map((entry, index) => {
+          if (index >= brushIndex[0] && index <= brushIndex[1]) {
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
+              />
+            );
+          }
+        })}
+      </Bar>
       <Area
         yAxisId='value_area'
         dataKey='value_area'
@@ -87,6 +130,7 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
         fillOpacity={1}
         stroke='#ffb700'
       />
+
       <Bar
         yAxisId='value_bar'
         dataKey='value_bar'
@@ -105,13 +149,13 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
       <Brush dataKey='date' height={30} stroke='#5388D899' />
 
       <defs>
-        <linearGradient id='color1' x1='0' y1='1.5' x2='0' y2='0'>
+        <linearGradient id={DataLabel.area} x1='0' y1='1.5' x2='0' y2='0'>
           <stop offset='30%' stopColor='#f5f6f8' stopOpacity={0.5} />
-          <stop offset='95%' stopColor='#ecae11' stopOpacity={0.5} />
+          <stop offset='95%' stopColor={MainChartColor.yellow} stopOpacity={0.5} />
         </linearGradient>
-        <linearGradient id='color2' x1='0' y1='1.5' x2='0' y2='0'>
-          <stop offset='30%' stopColor='#ffffff2d' stopOpacity={0.5} />
-          <stop offset='95%' stopColor='#5388D899' stopOpacity={0.5} />
+        <linearGradient id={DataLabel.bar} x1='0' y1='1.5' x2='0' y2='0'>
+          <stop offset='30%' stopColor={MainChartColor.opacityGray} stopOpacity={0.5} />
+          <stop offset='95%' stopColor={MainChartColor.blue} stopOpacity={0.5} />
         </linearGradient>
       </defs>
     </ComposedChart>
