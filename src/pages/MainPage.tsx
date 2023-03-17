@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-import { Data, OriginData } from 'types/types';
-import MainChart from 'components/MainChart';
-import MainLayout from 'components/common/MainLayout';
-import FilterButtons from 'components/FilterButtons';
+import { ChartData, MockData } from 'types/types';
+import { MainChart, MainLayout, FilterButtons } from 'components';
 
 const MainPage = () => {
-  const orginData = useLoaderData() as OriginData;
+  const mockData = useLoaderData() as MockData;
   const [query, setQuery] = useSearchParams();
 
-  const [datas, setDatas] = useState<Data[]>([]);
-  const [idRange, setIdRange] = useState<string[]>([]);
-  const [idSelect, setIdSelect] = useState<string[]>([]);
+  const [chartData, setDatas] = useState<ChartData[]>([]);
+  const [category, setChartData] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
-  const keys = Object.keys(orginData);
-  const val = Object.values(orginData);
+  const keys = Object.keys(mockData);
+  const val = Object.values(mockData);
   const [date] = keys[0].split(' ');
 
   useEffect(() => {
@@ -25,27 +23,23 @@ const MainPage = () => {
         return {
           ...e,
           date: time,
-          value_bar: val[idx].value_bar / 100, //Data Normalization
+          value_bar: val[idx].value_bar / 100, //ChartData Normalization
         };
       }),
     );
   }, []);
 
   useEffect(() => {
-    const arr = query.get('check')?.split('_');
-    arr?.pop();
-    if (arr !== undefined) {
-      setIdSelect([...arr]);
-    }
-  }, [query]);
-
-  useEffect(() => {
-    const deduplID = datas.reduce<string[]>((acc, cur) => {
+    const deduplID = chartData.reduce<string[]>((acc, cur) => {
       acc.includes(cur.id) ? acc : acc.push(cur.id);
       return acc;
     }, []);
-    setIdRange(deduplID);
-  }, [datas]);
+    setChartData(deduplID);
+  }, [chartData]);
+
+  useEffect(() => {
+    setSelectedCategory(query.getAll('check'));
+  }, [query]);
 
   return (
     <MainLayout>
@@ -57,11 +51,19 @@ const MainPage = () => {
         </Text>
         <Box borderRadius='lg' borderWidth='1px' p='2'>
           <Stack spacing={5} direction='row'>
-            <FilterButtons idRange={idRange} onChange={setIdSelect} idSelect={idSelect} />
+            <FilterButtons
+              category={category}
+              onChange={setSelectedCategory}
+              selectedCategory={selectedCategory}
+            />
           </Stack>
         </Box>
       </Flex>
-      <MainChart datas={datas} onChange={setIdSelect} idSelect={idSelect} />
+      <MainChart
+        chartData={chartData}
+        onChange={setSelectedCategory}
+        selectedCategory={selectedCategory}
+      />
     </MainLayout>
   );
 };

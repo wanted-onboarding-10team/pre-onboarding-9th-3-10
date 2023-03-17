@@ -1,11 +1,11 @@
-export interface Data {
+export interface ChartData {
   date: string;
   id: string;
   value_area: number;
   value_bar: number;
 }
 
-export interface OriginData {
+export interface MockData {
   [date: string]: {
     id: string;
     value_area: number;

@@ -11,16 +11,16 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
-import { Data } from 'types/types';
-import CustomTooltip from './CustomTooltip';
+import { ChartData } from 'types/types';
+import { CustomTooltip } from 'components';
 
 interface MainChartProps {
-  datas: Data[];
-  idSelect: string[];
+  chartData: ChartData[];
+  selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
+const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
   const [brushIndex, setBrushIndex] = useState<number[]>([]);
 
@@ -30,22 +30,28 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
 
   useEffect(() => {
     setActiveIndex(
-      datas.reduce<number[]>((acc, cur, idx, arr) => {
-        if (idSelect.includes(cur.id)) acc.push(idx);
+      chartData.reduce<number[]>((acc, cur, idx, arr) => {
+        if (selectedCategory.includes(cur.id)) acc.push(idx);
         return acc;
       }, []),
     );
-  }, [idSelect]);
+  }, [selectedCategory]);
 
   const handleBarClick = (data: BarProps) => {
-    if (data.id !== undefined) onChange([data.id]);
+    if (data.id !== undefined) {
+      if (selectedCategory.includes(data.id)) {
+        onChange(selectedCategory.filter(v => v !== data.id));
+      } else {
+        onChange([...selectedCategory, data.id]);
+      }
+    }
   };
 
   return (
     <ComposedChart
       width={2000}
       height={400}
-      data={datas}
+      data={chartData}
       margin={{
         top: 40,
         right: 80,
