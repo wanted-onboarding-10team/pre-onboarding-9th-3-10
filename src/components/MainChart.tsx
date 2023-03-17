@@ -39,8 +39,8 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
   const [brushIndex, setBrushIndex] = useState<number[]>([]);
 
   useEffect(() => {
-    setBrushIndex([0, datas.length - 1]);
-  }, [datas]);
+    setBrushIndex([0, chartData.length - 1]);
+  }, [chartData]);
 
   useEffect(() => {
     setActiveIndex(
@@ -111,7 +111,7 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
       >
-        {datas.map((entry, index) => {
+        {chartData.map((entry, index) => {
           if (index >= brushIndex[0] && index <= brushIndex[1]) {
             return (
               <Cell
