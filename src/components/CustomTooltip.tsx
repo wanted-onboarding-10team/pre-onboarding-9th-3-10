@@ -1,8 +1,8 @@
-import { Flex, Text } from '@chakra-ui/react';
 import { TooltipProps } from 'recharts';
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
-import img from 'assets/tooltipBox.png';
+import { Flex, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import img from 'assets/tooltipBox.png';
 
 const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>) => {
   if (active && payload && payload.length) {

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
-
+import { Button, ButtonGroup } from '@chakra-ui/react';
 interface IdBottonProps {
   idRange: string[];
   idSelect: string[];
@@ -23,6 +22,10 @@ const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
     } else {
       onChange([...idSelect, value]);
     }
+
+    if (value === '초기화') {
+      onChange([]);
+    }
   };
 
   return (
@@ -41,9 +44,6 @@ const FilterButtons = ({ idRange, onChange, idSelect }: IdBottonProps) => {
           );
         })}
       </ButtonGroup>
-      <Button bg={'gray.100'} onClick={() => onChange([])}>
-        초기화
-      </Button>
     </>
   );
 };

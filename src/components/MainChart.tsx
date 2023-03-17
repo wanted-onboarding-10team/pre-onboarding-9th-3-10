@@ -11,8 +11,8 @@ import {
   Brush,
   BarProps,
 } from 'recharts';
+import CustomTooltip from 'components/CustomTooltip';
 import { Data } from 'types/types';
-import CustomTooltip from './CustomTooltip';
 
 interface MainChartProps {
   datas: Data[];
@@ -25,7 +25,7 @@ const MainChart = ({ datas, idSelect, onChange }: MainChartProps) => {
 
   useEffect(() => {
     setActiveIndex(
-      datas.reduce<number[]>((acc, cur, idx, arr) => {
+      datas.reduce<number[]>((acc, cur, idx) => {
         if (idSelect.includes(cur.id)) acc.push(idx);
         return acc;
       }, []),

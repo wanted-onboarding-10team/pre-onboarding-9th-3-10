@@ -1,5 +1,5 @@
-import { Center } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
+import { Center } from '@chakra-ui/react';
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
