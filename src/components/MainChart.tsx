@@ -19,6 +19,16 @@ interface MainChartProps {
   selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
 }
+const MainChartColor = {
+  yellow: '#ffb700',
+  blue: '#5388D899',
+  opacityGray: '#ffffff2d',
+} as const;
+
+const DataLabel = {
+  bar: 'value_bar',
+  area: 'value_area',
+} as const;
 
 const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
@@ -70,23 +80,23 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
       />
       <XAxis hide={true} dataKey='id' />
       <YAxis
-        yAxisId='value_bar'
-        dataKey='value_bar'
+        yAxisId={DataLabel.bar}
+        dataKey={DataLabel.bar}
         orientation='left'
         label={{ value: 'value_bar, Unit : K', position: 'top', offset: 15 }}
       />
       <YAxis
-        yAxisId='value_area'
-        dataKey='value_area'
+        yAxisId={DataLabel.area}
+        dataKey={DataLabel.area}
         orientation='right'
         label={{ value: `value_area`, position: 'top', offset: 15 }}
       />
 
       <Bar
-        yAxisId='value_bar'
-        dataKey='value_bar'
+        yAxisId={DataLabel.bar}
+        dataKey={DataLabel.bar}
         onClick={handleBarClick}
-        fill={'#5388D899'}
+        fill={MainChartColor.blue}
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
       >
@@ -109,7 +119,6 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         fillOpacity={1}
         stroke='#ffb700'
       />
-
       <Brush
         dataKey='date'
         height={30}
@@ -121,13 +130,13 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
       />
 
       <defs>
-        <linearGradient id='color1' x1='0' y1='1.5' x2='0' y2='0'>
+        <linearGradient id={DataLabel.area} x1='0' y1='1.5' x2='0' y2='0'>
           <stop offset='30%' stopColor='#f5f6f8' stopOpacity={0.5} />
-          <stop offset='95%' stopColor='#ecae11' stopOpacity={0.5} />
+          <stop offset='95%' stopColor={MainChartColor.yellow} stopOpacity={0.5} />
         </linearGradient>
-        <linearGradient id='color2' x1='0' y1='1.5' x2='0' y2='0'>
-          <stop offset='30%' stopColor='#ffffff2d' stopOpacity={0.5} />
-          <stop offset='95%' stopColor='#5388D899' stopOpacity={0.5} />
+        <linearGradient id={DataLabel.bar} x1='0' y1='1.5' x2='0' y2='0'>
+          <stop offset='30%' stopColor={MainChartColor.opacityGray} stopOpacity={0.5} />
+          <stop offset='95%' stopColor={MainChartColor.blue} stopOpacity={0.5} />
         </linearGradient>
       </defs>
     </ComposedChart>
