@@ -13,10 +13,8 @@ import {
 } from 'recharts';
 
 import { CategoricalChartState } from 'recharts/types/chart/generateCategoricalChart';
-import { Data } from 'types/types';
 import { ChartData } from 'types/types';
 import { CustomTooltip } from 'components';
-
 
 interface MainChartProps {
   chartData: ChartData[];
@@ -58,11 +56,11 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
       payload: { id },
     } = data.activePayload[0];
 
-    if (data.id !== undefined) {
-      if (selectedCategory.includes(data.id)) {
-        onChange(selectedCategory.filter(v => v !== data.id));
+    if (id !== undefined) {
+      if (selectedCategory.includes(id)) {
+        onChange(selectedCategory.filter(v => v !== id));
       } else {
-        onChange([...selectedCategory, data.id]);
+        onChange([...selectedCategory, id]);
       }
     }
   };
@@ -106,7 +104,6 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
       <Bar
         yAxisId={DataLabel.bar}
         dataKey={DataLabel.bar}
-        onClick={handleBarClick}
         fill={MainChartColor.blue}
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
@@ -116,7 +113,7 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
             return (
               <Cell
                 key={`cell-${index}`}
-                fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
+                fill={activeIndex?.includes(index) ? '#F4BE37' : `url(#${DataLabel.bar})`}
               />
             );
           }
@@ -126,25 +123,10 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         yAxisId='value_area'
         dataKey='value_area'
         type='monotone'
-        fill='url(#color1)'
+        fill={`url(#${DataLabel.area})`}
         fillOpacity={1}
         stroke='#ffb700'
       />
-
-      <Bar
-        yAxisId='value_bar'
-        dataKey='value_bar'
-        fill={'#5388D899'}
-        radius={[3, 3, 0, 0]}
-        animationEasing={'ease-in-out'}
-      >
-        {datas.map((entry, index) => (
-          <Cell
-            key={`cell-${index}`}
-            fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
-          />
-        ))}
-      </Bar>
 
       <Brush dataKey='date' height={30} stroke='#5388D899' />
 
