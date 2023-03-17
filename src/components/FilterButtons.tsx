@@ -3,7 +3,6 @@ import { Button, ButtonGroup } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 
 interface IdBottonProps {
-
   category: string[];
   selectedCategory: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;

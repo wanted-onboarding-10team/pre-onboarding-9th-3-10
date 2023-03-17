@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
-
-import { Data } from 'types/types';
-import MainChart from 'components/MainChart';
-import MainLayout from 'components/common/MainLayout';
-import FilterButtons from 'components/FilterButtons';
+import { FilterButtons, MainLayout, MainChart } from 'components';
+import { ChartData } from 'types/types';
 
 const MainPage = () => {
-  const mockData = useLoaderData() as Data[];
+  const mockData = useLoaderData() as ChartData[];
 
   const [query, setQuery] = useSearchParams();
-  const areaList = Array.from(new Set<string>(mockData.map(data => data.id)));
+  const category = Array.from(new Set<string>(mockData.map(data => data.id)));
   const [date] = mockData[0].date.split(' ');
-  const [idSelect, setIdSelect] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
   useEffect(() => {
-    const arr = query.get('check')?.split('_');
-    arr?.pop();
-    if (arr !== undefined) {
-      setIdSelect([...arr]);
-    }
-
+    setSelectedCategory(query.getAll('check'));
   }, [query]);
 
   return (
@@ -34,12 +26,19 @@ const MainPage = () => {
         </Text>
         <Box borderRadius='lg' borderWidth='1px' p='2'>
           <Stack spacing={5} direction='row'>
-            <FilterButtons areaList={areaList} onChange={setIdSelect} idSelect={idSelect} />
+            <FilterButtons
+              category={category}
+              onChange={setSelectedCategory}
+              selectedCategory={selectedCategory}
+            />
           </Stack>
         </Box>
       </Flex>
-      <MainChart datas={mockData} onChange={setIdSelect} idSelect={idSelect} />
-
+      <MainChart
+        chartData={mockData}
+        onChange={setSelectedCategory}
+        selectedCategory={selectedCategory}
+      />
     </MainLayout>
   );
 };
