@@ -10,7 +10,7 @@ interface DailyChartViewProps {
   chartDatas: ChartData[];
 }
 
-const DailyChartView = ({ day, chartDatas }: DailyChartViewProps) => {
+const DailyChart = ({ day, chartDatas }: DailyChartViewProps) => {
   const [query, setQuery] = useSearchParams();
 
   const idRange = chartDatas.reduce<string[]>((acc, cur) => {
@@ -47,4 +47,4 @@ const DailyChartView = ({ day, chartDatas }: DailyChartViewProps) => {
   );
 };
 
-export default DailyChartView;
+export default DailyChart;
