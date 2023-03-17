@@ -22,6 +22,11 @@ interface MainChartProps {
 
 const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number[] | undefined>([]);
+  const [brushIndex, setBrushIndex] = useState<number[]>([]);
+
+  useEffect(() => {
+    setBrushIndex([0, datas.length - 1]);
+  }, [datas]);
 
   useEffect(() => {
     setActiveIndex(
@@ -77,14 +82,6 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         label={{ value: `value_area`, position: 'top', offset: 15 }}
       />
 
-      <Area
-        yAxisId='value_area'
-        dataKey='value_area'
-        type='monotone'
-        fill='url(#color1)'
-        fillOpacity={1}
-        stroke='#ffb700'
-      />
       <Bar
         yAxisId='value_bar'
         dataKey='value_bar'
@@ -93,15 +90,35 @@ const MainChart = ({ chartData, selectedCategory, onChange }: MainChartProps) =>
         radius={[3, 3, 0, 0]}
         animationEasing={'ease-in-out'}
       >
-        {chartData.map((entry, index) => (
-          <Cell
-            key={`cell-${index}`}
-            fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
-          />
-        ))}
+        {datas.map((entry, index) => {
+          if (index >= brushIndex[0] && index <= brushIndex[1]) {
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={activeIndex?.includes(index) ? '#F4BE37' : 'url(#color2)'}
+              />
+            );
+          }
+        })}
       </Bar>
+      <Area
+        yAxisId='value_area'
+        dataKey='value_area'
+        type='monotone'
+        fill='url(#color1)'
+        fillOpacity={1}
+        stroke='#ffb700'
+      />
 
-      <Brush dataKey='date' height={30} stroke='#5388D899' />
+      <Brush
+        dataKey='date'
+        height={30}
+        stroke='#5388D899'
+        onChange={e => {
+          if (!e.startIndex || !e.endIndex) return;
+          setBrushIndex([e.startIndex, e.endIndex]);
+        }}
+      />
 
       <defs>
         <linearGradient id='color1' x1='0' y1='1.5' x2='0' y2='0'>
