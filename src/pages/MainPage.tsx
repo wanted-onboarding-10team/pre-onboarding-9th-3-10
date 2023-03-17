@@ -1,35 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
-import { useLoaderData, useSearchParams } from 'react-router-dom';
-import { Data, OriginData } from 'types/types';
-import MainChart from 'components/MainChart';
-import MainLayout from 'components/common/MainLayout';
-import FilterButtons from 'components/FilterButtons';
+import { FilterButtons, MainChart, MainLayout } from 'components';
+import useChart from 'hooks/useChart';
 
 const MainPage = () => {
-  const orginData = useLoaderData() as OriginData;
+  const { datas, days, idRange } = useChart();
+
   const [query, setQuery] = useSearchParams();
-
-  const [datas, setDatas] = useState<Data[]>([]);
-  const [idRange, setIdRange] = useState<string[]>([]);
   const [idSelect, setIdSelect] = useState<string[]>([]);
-
-  const keys = Object.keys(orginData);
-  const val = Object.values(orginData);
-  const [date] = keys[0].split(' ');
-
-  useEffect(() => {
-    setDatas(
-      val.map((e, idx) => {
-        const [_, time] = keys[idx].split(' ');
-        return {
-          ...e,
-          date: time,
-          value_bar: val[idx].value_bar / 100, //Data Normalization
-        };
-      }),
-    );
-  }, []);
 
   useEffect(() => {
     const arr = query.get('check')?.split('_');
@@ -39,18 +18,10 @@ const MainPage = () => {
     }
   }, [query]);
 
-  useEffect(() => {
-    const deduplID = datas.reduce<string[]>((acc, cur) => {
-      acc.includes(cur.id) ? acc : acc.push(cur.id);
-      return acc;
-    }, []);
-    setIdRange(deduplID);
-  }, [datas]);
-
   return (
     <MainLayout>
-      <Heading size={'lg'}>{date}</Heading>
-      <Text marginBottom={2}>{date} 에 수집된 정보 시각화 차트</Text>
+      <Heading size={'lg'}>{days}</Heading>
+      <Text marginBottom={2}>{days} 에 수집된 정보 시각화 차트</Text>
       <Flex direction='column'>
         <Text marginBottom='1' fontSize='.9rem' color='gray.400' fontWeight='700'>
           ID 필터링

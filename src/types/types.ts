@@ -1,5 +1,5 @@
 export interface Data {
-  date: string;
+  days: string;
   id: string;
   value_area: number;
   value_bar: number;
