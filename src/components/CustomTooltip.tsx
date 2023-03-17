@@ -1,21 +1,42 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { TooltipProps } from 'recharts';
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
-import img from 'assets/tooltipBox.png';
 import styled from '@emotion/styled';
 
-const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>) => {
-  if (active && payload && payload.length) {
-    const {
-      payload: { id, value_area, value_bar },
-    } = payload[0];
+interface ColorObj {
+  [key: string]: string;
+}
+
+const Content = styled.div`
+  padding: 10px;
+  min-width: 170px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px #bababa;
+  border: solid 1px #bababa;
+`;
+
+const CustomTooltip = ({ active, payload: load }: TooltipProps<ValueType, NameType>) => {
+  if (active && load && load.length) {
+    const { payload } = load[0];
+
+    const nameColorObj = load.reduce<ColorObj>((acc, cur) => {
+      const { name = '', color } = cur;
+      return Object.assign(acc, { [name]: color });
+    }, {});
+
+    const key = Object.keys(payload);
 
     return (
       <Content>
         <Flex direction={'column'}>
-          <Text className='label'>{`id : ${id}`}</Text>
-          <Text className='label'>{`value_area : ${value_area}`}</Text>
-          <Text className='label'>{`value_bar : ${value_bar}K`}</Text>
+          {key.map(e => {
+            return (
+              <Text key={e + 'Tooltip Key'} className='label' color={nameColorObj[e]}>
+                <b>{e} :</b> {payload[e]}
+              </Text>
+            );
+          })}
         </Flex>
       </Content>
     );
@@ -23,11 +44,3 @@ const CustomTooltip = ({ active, payload }: TooltipProps<ValueType, NameType>) =
 };
 
 export default CustomTooltip;
-
-const Content = styled.div`
-  padding: 10px;
-  width: 170px;
-  height: 110px;
-  background-image: url(${img});
-  background-size: 100% 100%;
-`;
